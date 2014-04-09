@@ -16,7 +16,7 @@ background = pygame.Surface((screen.get_width(), screen.get_height()))
 background.fill((255, 255, 255))
 
 GameObject.groups = group
-test = GameObject((0, 0), (100, 100), testTex)   #test purposes
+test = GameObject((400, 0), (100, 100), testTex)   #test purposes
 
 while True: # main game loop
     time = fpsClock.tick(30)

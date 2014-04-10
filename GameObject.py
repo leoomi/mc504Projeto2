@@ -12,6 +12,9 @@ class GameObject(pygame.sprite.Sprite):
         self.rect.center = initialPos
         self.image.convert_alpha()
         
+    def changeDestination(self,x,y):
+        self.destination = [x,y]
+        
     def update(self, deltaTime):
         self.movement(deltaTime)
     

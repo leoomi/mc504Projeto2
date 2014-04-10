@@ -2,6 +2,7 @@ import pygame, sys
 from pygame.locals import *
 pygame.init()
 from GameObject import *
+import time
 
 screen = pygame.display.set_mode((400, 300))
 screen.fill((255, 255, 255))
@@ -19,6 +20,7 @@ GameObject.groups = group
 test = GameObject((0, 0), (100, 100), testTex)   #test purposes
 test2= GameObject((0, 100), (100, 100), testTex)
 test3= GameObject((200, 100), (100, 100), testTex)
+test3.changeDestination(0,0)
 while True: # main game loop
     time = fpsClock.tick(30)
 

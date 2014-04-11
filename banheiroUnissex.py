@@ -1,21 +1,7 @@
-import pygame, sys
-from pygame.locals import *
-pygame.init()
-from GameObject import *
-import time
-
-screen = pygame.display.set_mode((400, 300))
-screen.fill((255, 255, 255))
-
-pygame.display.set_caption('Banheiro Unissex')
-
-testTex = pygame.image.load('penguin.png')
-testTex2 = pygame.image.load('penguinFemale.png')
-fpsClock = pygame.time.Clock()
-group = pygame.sprite.Group()
+#!/usr/bin/python
 
 import threading
-
+import time
 
 empty = threading.Semaphore(1) #semaforo que indica se o banheiro esta ou nao vazio
 maleMultiplex = threading.Semaphore(3) #Multiplex garantem que no maximo 3 pessoas fiquem simultaneamente no banheiro
@@ -53,9 +39,6 @@ class threadMale (threading.Thread):
 		maleLock.changeStatus()
 	maleMultiplex.acquire()
 	print "Homem %d entrou no banheiro" %(self.threadID)
-	time.sleep(self.threadID)
-	test = GameObject((0, 0), (100, 100), testTex)
-	test.changeDestination(self.threadID*40+200,100)
 	time.sleep(5)
 	print "Homem %d saiu do banheiro" %(self.threadID)
 	maleLock.counter = maleLock.counter-1
@@ -76,44 +59,28 @@ class threadFemale (threading.Thread):
 		femaleLock.changeStatus()
 	femaleMultiplex.acquire()
 	print "Mulher %d entrou no banheiro" %(self.threadID)
-	time.sleep(self.threadID)
-	test = GameObject((0, 0), (100, 100), testTex2)
-	test.changeDestination(self.threadID*40,100)
-	time.sleep(9)
+	time.sleep(5)
 	print "Mulher %d saiu do banheiro" %(self.threadID)
-	test.changeDestination(self.threadID*40,300)
 	femaleLock.counter = femaleLock.counter-1
 	if femaleLock.counter == 0:
 		femaleLock.changeStatus()
 	femaleMultiplex.release()
-
-background = pygame.Surface((screen.get_width(), screen.get_height()))
-background.fill((255, 255, 255))
+	
 
 
-
-GameObject.groups = group
-
+# Create new threads
 numberOfThreads=1
-while True: # main game loop
-    times = fpsClock.tick(30)
-    
-
-    if numberOfThreads<4:
+while numberOfThreads<4:
+        time.sleep(1)
         thread1 = threadMale(numberOfThreads, "Homem", 1, maleLock)
         thread1.start()
-        thread2 = threadFemale(numberOfThreads, "Mulher", 1, maleLock)
+	thread2 = threadFemale(numberOfThreads, "Mulher", 1, maleLock)
         thread2.start()
-        numberOfThreads+= 1
+	numberOfThreads+= 1
 
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-    
-    group.clear(screen, background)
-    group.update(times/1000.0)
-    group.draw(screen)
+#time.sleep(10)
+#thread2 = threadFemale(numberOfThreads, "Mulher", 1, maleLock)
 
-    pygame.display.update()
-    
+#thread1 = threadMale(numberOfThreads, "Homem", 1, maleLock)
+#thread1.start()
+#thread2.start()

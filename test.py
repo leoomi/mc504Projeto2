@@ -67,10 +67,13 @@ class threadMale (threading.Thread):
 	time.sleep(5)
 	print "Homem %d saiu do banheiro" %(self.threadID)
 	test.changeDestination(180,400)
+
 	maleLock.counter = maleLock.counter-1
 	if maleLock.counter == 0:
 		maleLock.changeStatus()
 	maleMultiplex.release()
+	time.sleep(12)
+	test.kill()
 
 class threadFemale (threading.Thread):
     def __init__(self, threadID, name, counter, lock):
@@ -95,11 +98,15 @@ class threadFemale (threading.Thread):
 	test.changeDestination((self.threadID%3)*40+150,20)
 	time.sleep(5)
 	print "Mulher %d saiu do banheiro" %(self.threadID)
-	test.changeDestination(200,400)
+
+    
 	femaleLock.counter = femaleLock.counter-1
 	if femaleLock.counter == 0:
 		femaleLock.changeStatus()
 	femaleMultiplex.release()
+	test.changeDestination(200,400)
+	time.sleep(12)
+	test.kill()
 
 background = pygame.Surface((screen.get_width(), screen.get_height()))
 background.fill((255, 255, 255))
@@ -112,7 +119,6 @@ femaleCounter = 1
 
 while True: # main game loop
     times = fpsClock.tick(60)
-	
     for event in pygame.event.get():
 	if event.type == QUIT:
 		pygame.quit()

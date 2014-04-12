@@ -38,3 +38,12 @@ class GameObject(pygame.sprite.Sprite):
             self.rect.y = self.rect.y + deltaTime*self.speed[1]
             if(self.rect.y > self.destination[1]):
                 self.rect.y = self.destination[1]
+				
+class Background(pygame.sprite.Sprite):
+    def __init__(self, initialPos, size, texture):
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.image = pygame.Surface((0, 0))
+        self.image = texture
+        self.rect = self.image.get_rect()
+        self.rect.center = initialPos
+        self.image.convert_alpha()	

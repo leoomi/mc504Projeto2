@@ -1,3 +1,7 @@
+#MC 504 - PROJETO 2 - BANHEIRO UNISSEX
+#138386 GABRIEL BORGES MAGALHAES
+#138684 LEO YUUKI OMORI OMI
+
 import pygame, sys
 from pygame.locals import *
 pygame.init()
@@ -19,8 +23,8 @@ group2 = pygame.sprite.Group()
 import threading
 
 
-empty = threading.Semaphore(1) #semaforo que indica se o banheiro esta ou nao vazio
-maleMultiplex = threading.Semaphore(3) #Multiplex garantem que no maximo 3 pessoas fiquem simultaneamente no banheiro
+empty = threading.Semaphore(1)						  #semaforo que indica se o banheiro esta ou nao vazio
+maleMultiplex = threading.Semaphore(3)                #Multiplex garantem que no maximo 3 pessoas fiquem simultaneamente no banheiro
 femaleMultiplex = threading.Semaphore(3)
 
 
@@ -28,7 +32,7 @@ class lock():
     def __init__(self):
 	self.status = 'False'
 	self.lastIn =0
-	self.counter = 0 #contador de pessoas que acessaram o lock
+	self.counter = 0 								  #contador de pessoas que acessaram o lock
     def changeStatus(self):
 	
 	if self.status == 'False' and self.counter == 1:  #garante que so uma pessoa chame o metodo acquire de empty
@@ -53,16 +57,16 @@ class threadMale (threading.Thread):
 	self.lock = lock
     def run(self):
 	maleLock.counter = maleLock.counter+1
-	test = GameObject((400, 100), (100, 100), testTex)
-	test.changeDestination((self.threadID%5)*40+200,100)
+	test = GameObject((400, 100), (100, 100), testTex)   #cria novo objeto (pinguim) e o adiciona ao grupo para desenhar a sprite na tela
+	test.changeDestination((self.threadID%5)*40+200,100) #muda as coordenadas de destino do objeto
 	while maleLock.status == 'False':
 		maleLock.changeStatus()
-	while maleLock.lastIn + 1 != self.threadID:
+	while maleLock.lastIn + 1 != self.threadID:			 #faz com que a ordem de entrada seja tal que obedeca a regra de 1 por slot
 		time.sleep(0)
 	maleLock.lastIn = maleLock.lastIn + 1
 	maleMultiplex.acquire()
 	test.changeDestination(180,100)
-	time.sleep(3-(self.threadID%3)/2)
+	time.sleep(3-(self.threadID%3)/2)                    #tempo de sleep varia com a localizacao do pinguim. Serve para que todos entrem pela porta.
 	test.changeDestination((self.threadID%3)*40+150,20)
 	print "Homem %d entrou no banheiro" %(self.threadID)
 	time.sleep(5)
@@ -73,7 +77,7 @@ class threadMale (threading.Thread):
 	if maleLock.counter == 0:
 		maleLock.changeStatus()
 	maleMultiplex.release()
-	time.sleep(12)
+	time.sleep(9)										 #aguarda o objeto sair da tela para exlcui-lo
 	test.kill()
 
 class threadFemale (threading.Thread):

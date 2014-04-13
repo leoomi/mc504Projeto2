@@ -5,6 +5,7 @@ from GameObject import *
 import time
 
 screen = pygame.display.set_mode((400, 300))
+bg =  pygame.display.set_mode((400, 300))
 screen.fill((255, 255, 255))
 
 pygame.display.set_caption('Banheiro Unissex')
@@ -134,7 +135,7 @@ while True: # main game loop
 	test = Background((200,150),(400, 300), backgroundTexture)
 
     group.clear(screen, background)
-    group2.draw(screen)
+    group2.draw(bg)
     group.update(times/1000.0)
     group.draw(screen)
     pygame.display.update()

@@ -35,7 +35,8 @@ class lock():
     def __init__(self):
 	self.status = 'False'
 	self.lastIn =0
-	self.counter = 0 								  #contador de pessoas que acessaram o lock
+	self.counter = 0
+	self.insideCounter =0 								  #contador de pessoas que acessaram o lock
     def changeStatus(self):
 	
 	if self.status == 'False' and self.counter == 1:  #garante que so uma pessoa chame o metodo acquire de empty
@@ -72,11 +73,12 @@ class threadMale (threading.Thread):
 	time.sleep(3-(self.threadID%3)/2)                    #tempo de sleep varia com a localizacao do pinguim. Serve para que todos entrem pela porta.
 	test.changeDestination((self.threadID%3)*40+150,20)
 	print "Homem %d entrou no banheiro" %(self.threadID)
-	maleLock.counter = maleLock.counter-1
+	maleLock.insideCounter = maleLock.insideCounter + 1
 	time.sleep(5)
+	maleLock.insideCounter = maleLock.insideCounter - 1
 	print "Homem %d saiu do banheiro" %(self.threadID)
 	test.changeDestination(180,400)
-
+	maleLock.counter = maleLock.counter-1
 
 	if maleLock.counter == 0:
 		maleLock.changeStatus()
@@ -102,14 +104,14 @@ class threadFemale (threading.Thread):
 	femaleLock.lastIn = femaleLock.lastIn + 1
 	femaleMultiplex.acquire()
 	print "Mulher %d entrou no banheiro" %(self.threadID)
-	femaleLock.counter = femaleLock.counter-1
+	femaleLock.insideCounter = femaleLock.insideCounter + 1
 	test.changeDestination(180,100)
 	time.sleep(3-(self.threadID%3)/2)
 	test.changeDestination((self.threadID%3)*40+150,20)
 	time.sleep(5)
+	femaleLock.insideCounter = femaleLock.insideCounter - 1
 	print "Mulher %d saiu do banheiro" %(self.threadID)
-
-    
+	femaleLock.counter = femaleLock.counter-1
 
 	if femaleLock.counter == 0:
 		femaleLock.changeStatus()
@@ -153,9 +155,9 @@ while True: # main game loop
     	info.blit(femaleSign,(0,0))
     elif maleLock.status == 'True':
 	info.blit(maleSign,(0,0))
-    text = font.render("Mulheres na Fila:" + str(femaleLock.counter), 1, (0, 0, 0))
+    text = font.render("Mulheres na Fila:" + str(femaleLock.counter-femaleLock.insideCounter), 1, (255, 255, 255))
     info.blit(text,(10,250))
-    text = font.render("Homens na Fila:" + str(maleLock.counter), 1, (0, 0, 0))
+    text = font.render("Homens na Fila:" + str(maleLock.counter), 1, (255, 255, 255))
     info.blit(text,(10,272))
     pygame.display.update()
 

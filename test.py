@@ -10,6 +10,7 @@ import time
 
 screen = pygame.display.set_mode((400, 300))
 bg =  pygame.display.set_mode((400, 300))
+info = pygame.display.set_mode((400, 300))
 screen.fill((255, 255, 255))
 
 pygame.display.set_caption('Banheiro Unissex')
@@ -17,6 +18,8 @@ pygame.display.set_caption('Banheiro Unissex')
 backgroundTexture = pygame.image.load('backGround.png')
 testTex = pygame.image.load('penguin.png')
 testTex2 = pygame.image.load('penguinFemale.png')
+femaleSign = pygame.image.load('woman.png')
+maleSign = pygame.image.load('men.png')
 fpsClock = pygame.time.Clock()
 group = pygame.sprite.Group()
 group2 = pygame.sprite.Group()
@@ -142,5 +145,11 @@ while True: # main game loop
     group2.draw(bg)
     group.update(times/1000.0)
     group.draw(screen)
+    if femaleLock.status == 'True':
+    	info.blit(femaleSign,(0,0))
+    elif maleLock.status == 'True':
+	info.blit(maleSign,(0,0))
     pygame.display.update()
+
+
     

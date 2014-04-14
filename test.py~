@@ -72,11 +72,12 @@ class threadMale (threading.Thread):
 	time.sleep(3-(self.threadID%3)/2)                    #tempo de sleep varia com a localizacao do pinguim. Serve para que todos entrem pela porta.
 	test.changeDestination((self.threadID%3)*40+150,20)
 	print "Homem %d entrou no banheiro" %(self.threadID)
+	maleLock.counter = maleLock.counter-1
 	time.sleep(5)
 	print "Homem %d saiu do banheiro" %(self.threadID)
 	test.changeDestination(180,400)
 
-	maleLock.counter = maleLock.counter-1
+
 	if maleLock.counter == 0:
 		maleLock.changeStatus()
 	maleMultiplex.release()
@@ -101,6 +102,7 @@ class threadFemale (threading.Thread):
 	femaleLock.lastIn = femaleLock.lastIn + 1
 	femaleMultiplex.acquire()
 	print "Mulher %d entrou no banheiro" %(self.threadID)
+	femaleLock.counter = femaleLock.counter-1
 	test.changeDestination(180,100)
 	time.sleep(3-(self.threadID%3)/2)
 	test.changeDestination((self.threadID%3)*40+150,20)
@@ -108,7 +110,7 @@ class threadFemale (threading.Thread):
 	print "Mulher %d saiu do banheiro" %(self.threadID)
 
     
-	femaleLock.counter = femaleLock.counter-1
+
 	if femaleLock.counter == 0:
 		femaleLock.changeStatus()
 	femaleMultiplex.release()
@@ -124,6 +126,8 @@ Background.groups = group2
 GameObject.groups = group	
 maleCounter = 1
 femaleCounter = 1
+font = pygame.font.SysFont('Courier New', 20)
+
 
 while True: # main game loop
     times = fpsClock.tick(60)
@@ -147,6 +151,12 @@ while True: # main game loop
     group.draw(screen)
     if femaleLock.status == 'True':
     	info.blit(femaleSign,(0,0))
+    elif maleLock.status == 'True':
+	info.blit(maleSign,(0,0))
+    text = font.render("Mulheres na Fila:" + str(femaleLock.counter), 1, (0, 0, 0))
+    info.blit(text,(10,250))
+    text = font.render("Homens na Fila:" + str(maleLock.counter), 1, (0, 0, 0))
+    info.blit(text,(10,272))
     pygame.display.update()
 
 

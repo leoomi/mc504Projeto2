@@ -1,4 +1,7 @@
 mc504Projeto2
+138386 GABRIEL BORGES MAGALHAES
+138684 LEO YUUKI OMORI OMI
+
 =============
 
 Projeto do curso de Sistemas Operacionais onde a meta é criar um programa que faz uma animação de um algum problema de multithread.

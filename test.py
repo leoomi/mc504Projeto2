@@ -66,7 +66,7 @@ class threadMale (threading.Thread):
         self.counter = counter
 	self.lock = lock
     def run(self):
-	maleLock.consecutive = maleLock.consecutive + 1
+
 	maleLock.naFila = maleLock.naFila + 1
 	test = GameObject((400, 100), (100, 100), testTex)   #cria novo objeto (pinguim) e o adiciona ao grupo para desenhar a sprite na tela
 	test.changeDestination((self.threadID%5)*40+200,100) #muda as coordenadas de destino do objeto
@@ -74,6 +74,7 @@ class threadMale (threading.Thread):
 		maleLock.consecutive = 0							
 		maleTurnstile.clear()
 	maleTurnstile.wait()
+	maleLock.consecutive = maleLock.consecutive + 1
 	maleLock.counter = maleLock.counter+1
 	while maleLock.status == 'False':
 		maleLock.changeStatus()
@@ -108,7 +109,6 @@ class threadFemale (threading.Thread):
         self.counter = counter
 	self.lock = lock
     def run(self):
-	femaleLock.consecutive = femaleLock.consecutive + 1
 	femaleLock.naFila = femaleLock.naFila + 1
 	test = GameObject((0, 100), (100, 100), testTex2)
 	test.changeDestination((self.threadID%5)*40,100)
@@ -116,6 +116,7 @@ class threadFemale (threading.Thread):
 		femaleLock.consecutive = 0							
 		femaleTurnstile.clear()
 	femaleTurnstile.wait()
+	femaleLock.consecutive = femaleLock.consecutive + 1
 	femaleLock.counter = femaleLock.counter+1
 	while femaleLock.status == 'False':
 		femaleLock.changeStatus()

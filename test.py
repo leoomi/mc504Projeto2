@@ -70,7 +70,7 @@ class threadMale (threading.Thread):
 	maleLock.naFila = maleLock.naFila + 1
 	test = GameObject((400, 100), (100, 100), testTex)   #cria novo objeto (pinguim) e o adiciona ao grupo para desenhar a sprite na tela
 	test.changeDestination((self.threadID%5)*40+200,100) #muda as coordenadas de destino do objeto
-	if femaleLock.naFila > 0 and maleLock.consecutive > 6:
+	if femaleLock.naFila > 0 and maleLock.consecutive > 5:
 		maleLock.consecutive = 0							
 		maleTurnstile.clear()
 	maleTurnstile.wait()
@@ -112,7 +112,7 @@ class threadFemale (threading.Thread):
 	femaleLock.naFila = femaleLock.naFila + 1
 	test = GameObject((0, 100), (100, 100), testTex2)
 	test.changeDestination((self.threadID%5)*40,100)
-	if maleLock.naFila > 0 and femaleLock.consecutive > 6:
+	if maleLock.naFila > 0 and femaleLock.consecutive > 5:
 		femaleLock.consecutive = 0							
 		femaleTurnstile.clear()
 	femaleTurnstile.wait()
